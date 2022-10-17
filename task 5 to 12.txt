@@ -1,0 +1,116 @@
+TASK 5
+Calculate the accuracy on the test data using the method score:
+
+logreg_cv.score(X_test, Y_test)
+/home/jupyterlab/conda/envs/python/lib/python3.7/site-packages/sklearn/linear_model/base.py:283: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
+  indices = (scores > 0).astype(np.int)
+0.8333333333333334
+Lets look at the confusion matrix:
+
+yhat=logreg_cv.predict(X_test)
+plot_confusion_matrix(Y_test,yhat)
+/home/jupyterlab/conda/envs/python/lib/python3.7/site-packages/sklearn/linear_model/base.py:283: DeprecationWarning: `np.int` is a deprecated alias for the builtin `int`. To silence this warning, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+Deprecated in NumPy 1.20; for more details and guidance: https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
+  indices = (scores > 0).astype(np.int)
+
+Examining the confusion matrix, we see that logistic regression can distinguish between the different classes. We see that the major problem is false positives.
+
+TASK 6
+Create a support vector machine object then create a GridSearchCV object svm_cv with cv - 10. Fit the object to find the best parameters from the dictionary parameters.
+
+parameters = {'kernel':('linear', 'rbf','poly','rbf', 'sigmoid'),
+              'C': np.logspace(-3, 3, 5),
+              'gamma':np.logspace(-3, 3, 5)}
+svm = SVC()
+# Instantiate the GridSearchCV object: svm_cv
+svm_cv = GridSearchCV(svm, parameters, cv=10)
+​
+# Fit it to the data
+svm_cv.fit(X_train, Y_train)
+print("tuned hpyerparameters :(best parameters) ",svm_cv.best_params_)
+print("accuracy :",svm_cv.best_score_)
+tuned hpyerparameters :(best parameters)  {'C': 1.0, 'gamma': 0.03162277660168379, 'kernel': 'sigmoid'}
+accuracy : 0.8472222222222222
+TASK 7
+Calculate the accuracy on the test data using the method score:
+
+svm_cv.score(X_test, Y_test)
+0.8333333333333334
+We can plot the confusion matrix
+
+yhat=svm_cv.predict(X_test)
+plot_confusion_matrix(Y_test,yhat)
+
+TASK 8
+Create a decision tree classifier object then  create a  <code>GridSearchCV</code> object  <code>tree_cv</code> with cv = 10.  Fit the object to find the best parameters from the dictionary <code>parameters</code>.
+​
+print("tuned hpyerparameters :(best parameters) ",tree_cv.best_params_)
+print("accuracy :",tree_cv.best_score_)
+tuned hpyerparameters :(best parameters)  {'criterion': 'entropy', 'max_depth': 10, 'max_features': 'auto', 'min_samples_leaf': 1, 'min_samples_split': 2, 'splitter': 'best'}
+accuracy : 0.8888888888888888
+GridSearchCV(cv=10, error_score='raise-deprecating',
+       estimator=DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
+            max_features=None, max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, presort=False, random_state=None,
+            splitter='best'),
+       fit_params=None, iid='warn', n_jobs=None,
+       param_grid={'criterion': ['gini', 'entropy'], 'splitter': ['best', 'random'], 'max_depth': [2, 4, 6, 8, 10, 12, 14, 16, 18], 'max_features': ['auto', 'sqrt'], 'min_samples_leaf': [1, 2, 4], 'min_samples_split': [2, 5, 10]},
+       pre_dispatch='2*n_jobs', refit=True, return_train_score='warn',
+       scoring=None, verbose=0)
+TASK 9
+Calculate the accuracy of tree_cv on the test data using the method score:
+
+tree_cv.score(X_test, Y_test)
+tree_cv.score(X_test, Y_test)
+0.7222222222222222
+We can plot the confusion matrix
+
+yhat = svm_cv.predict(X_test)
+plot_confusion_matrix(Y_test,yhat)
+yhat = svm_cv.predict(X_test)
+plot_confusion_matrix(Y_test,yhat)
+
+TASK 10
+Create a k nearest neighbors object then create a GridSearchCV object knn_cv with cv = 10. Fit the object to find the best parameters from the dictionary parameters.
+
+parameters = {'n_neighbors': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+              'algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute'],
+              'p': [1,2]}
+​
+KNN = KNeighborsClassifier()
+knn_cv = GridSearchCV(KNN, parameters, cv=10)
+knn_cv.fit(X_train, Y_train)
+print("tuned hpyerparameters :(best parameters) ",knn_cv.best_params_)
+print("accuracy :",knn_cv.best_score_)
+tuned hpyerparameters :(best parameters)  {'algorithm': 'auto', 'n_neighbors': 9, 'p': 1}
+accuracy : 0.8472222222222222
+TASK 11
+Calculate the accuracy of tree_cv on the test data using the method score:
+
+knn_cv.score(X_test, Y_test)
+/home/jupyterlab/conda/envs/python/lib/python3.7/site-packages/sklearn/neighbors/base.py:442: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+  old_joblib = LooseVersion(joblib_version) < LooseVersion('0.12')
+/home/jupyterlab/conda/envs/python/lib/python3.7/site-packages/sklearn/neighbors/base.py:442: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+  old_joblib = LooseVersion(joblib_version) < LooseVersion('0.12')
+0.8333333333333334
+We can plot the confusion matrix
+
+yhat = knn_cv.predict(X_test)
+plot_confusion_matrix(Y_test,yhat)
+/home/jupyterlab/conda/envs/python/lib/python3.7/site-packages/sklearn/neighbors/base.py:442: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+  old_joblib = LooseVersion(joblib_version) < LooseVersion('0.12')
+/home/jupyterlab/conda/envs/python/lib/python3.7/site-packages/sklearn/neighbors/base.py:442: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+  old_joblib = LooseVersion(joblib_version) < LooseVersion('0.12')
+
+TASK 12
+Find the method performs best:
+
+predictors = [knn_cv, svm_cv, logreg_cv, tree_cv]
+best_predictor = ""
+best_result = 0
+for predictor in predictors:
+    
+    predictor.score(X_test, Y_test)
